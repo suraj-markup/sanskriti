@@ -119,55 +119,47 @@ export default function Home({ onEnroll }) {
             {/* Watch Us Teach — YouTube teaser (coming soon until videos.js is populated) */}
             <section className="py-20 bg-slate-50 border-t border-slate-100">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
-                        <div>
-                            <h3 className="text-primary font-semibold uppercase tracking-wider text-xs mb-2">Watch Us Teach</h3>
-                            <h2 className="text-deep-blue text-3xl md:text-4xl font-bold">Sample Lessons on YouTube</h2>
-                        </div>
-                        {videos.length > 0 ? (
-                            <Link
-                                to="/videos"
-                                className="inline-flex items-center gap-1.5 text-primary font-semibold hover:text-primary-hover transition-colors"
-                            >
-                                View all videos
-                                <span className="material-symbols-outlined text-base">arrow_forward</span>
-                            </Link>
-                        ) : (
-                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold uppercase tracking-wider self-start md:self-auto">
-                                <span className="w-2 h-2 rounded-full bg-amber-600 animate-pulse" />
-                                Coming Soon
-                            </span>
-                        )}
+                    <div className="text-center mb-10">
+                        <h3 className="text-primary font-semibold uppercase tracking-wider text-xs mb-2">Watch Us Teach</h3>
+                        <h2 className="text-deep-blue text-3xl md:text-4xl font-bold">Sample Lessons on YouTube</h2>
+                        <p className="mt-3 text-slate-600 max-w-xl mx-auto">
+                            {videos.length > 0
+                                ? 'Sample class snippets, concept breakdowns, and topper interviews from our faculty.'
+                                : 'Our video library is on its way — sample classes, concept breakdowns, and student success stories.'}
+                        </p>
                     </div>
 
-                    {videos.length > 0 ? (
-                        <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-4 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
-                            {videos.slice(0, 3).map(v => (
-                                <div key={v.id} className="shrink-0 w-[85%] md:w-auto snap-center">
-                                    <YouTubeEmbed videoId={v.id} title={v.title} />
-                                    <p className="mt-3 font-semibold text-deep-blue text-sm">{v.title}</p>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
+                    <div className="max-w-4xl mx-auto">
+                        <ImageCarousel
+                            aspect="aspect-video"
+                            slides={videos.length > 0
+                                ? videos.slice(0, 3).map(v => (
+                                    <div className="w-full h-full">
+                                        <YouTubeEmbed videoId={v.id} title={v.title} />
+                                        <div className="absolute left-0 right-0 bottom-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent p-5">
+                                            <p className="text-white text-sm md:text-base font-medium">{v.title}</p>
+                                        </div>
+                                    </div>
+                                ))
+                                : ['Sample Lessons', 'Concept Breakdowns', "Toppers' Journeys"].map(label => (
+                                    <div className="w-full h-full bg-background-light flex flex-col items-center justify-center text-center gap-2 px-6">
+                                        <span className="material-symbols-outlined text-5xl text-primary/60">play_circle</span>
+                                        <span className="text-lg md:text-xl font-semibold text-deep-blue">{label}</span>
+                                        <span className="text-[11px] uppercase tracking-widest text-amber-700 font-semibold">Coming Soon</span>
+                                    </div>
+                                ))
+                            }
+                        />
+                    </div>
+                    <div className="text-center mt-8">
                         <Link
                             to="/videos"
-                            className="block group"
-                            aria-label="Preview upcoming video library"
+                            className="inline-flex items-center gap-1.5 text-primary font-semibold hover:text-primary-hover transition-colors"
                         >
-                            <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-4 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
-                                {['Sample Lessons', 'Concept Breakdowns', "Toppers' Journeys"].map(label => (
-                                    <div
-                                        key={label}
-                                        className="shrink-0 w-[85%] md:w-auto snap-center aspect-video rounded-xl border-2 border-dashed border-slate-200 bg-white flex flex-col items-center justify-center text-slate-400 gap-1 group-hover:border-primary/40 group-hover:text-primary transition-colors"
-                                    >
-                                        <span className="material-symbols-outlined text-4xl">play_circle</span>
-                                        <span className="text-sm font-medium">{label}</span>
-                                    </div>
-                                ))}
-                            </div>
+                            {videos.length > 0 ? 'View all videos' : 'Preview video library'}
+                            <span className="material-symbols-outlined text-base">arrow_forward</span>
                         </Link>
-                    )}
+                    </div>
                 </div>
             </section>
 

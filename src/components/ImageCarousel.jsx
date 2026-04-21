@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 export default function ImageCarousel({
     images,
+    slides,
     autoPlay = true,
     interval = 4500,
     aspect = 'aspect-[16/10]',
@@ -9,7 +10,7 @@ export default function ImageCarousel({
     const [index, setIndex] = useState(0);
     const [paused, setPaused] = useState(false);
     const touchStartX = useRef(null);
-    const count = images.length;
+    const count = slides ? slides.length : (images?.length ?? 0);
 
     const goTo = useCallback((next) => {
         setIndex(((next % count) + count) % count);
@@ -51,25 +52,35 @@ export default function ImageCarousel({
             onTouchEnd={onTouchEnd}
         >
             <div className={`relative ${aspect}`}>
-                {images.map((img, i) => (
-                    <div
-                        key={img.src}
-                        className={`absolute inset-0 transition-opacity duration-700 ease-out ${i === index ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-                        aria-hidden={i !== index}
-                    >
-                        <img
-                            src={img.src}
-                            alt={img.alt || ''}
-                            className="w-full h-full object-cover"
-                            loading={i === 0 ? 'eager' : 'lazy'}
-                        />
-                        {img.caption && (
-                            <div className="absolute left-0 right-0 bottom-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent p-5">
-                                <p className="text-white text-sm md:text-base font-medium">{img.caption}</p>
-                            </div>
-                        )}
-                    </div>
-                ))}
+                {slides
+                    ? slides.map((node, i) => (
+                        <div
+                            key={i}
+                            className={`absolute inset-0 transition-opacity duration-700 ease-out ${i === index ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                            aria-hidden={i !== index}
+                        >
+                            {node}
+                        </div>
+                    ))
+                    : images.map((img, i) => (
+                        <div
+                            key={img.src}
+                            className={`absolute inset-0 transition-opacity duration-700 ease-out ${i === index ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                            aria-hidden={i !== index}
+                        >
+                            <img
+                                src={img.src}
+                                alt={img.alt || ''}
+                                className="w-full h-full object-cover"
+                                loading={i === 0 ? 'eager' : 'lazy'}
+                            />
+                            {img.caption && (
+                                <div className="absolute left-0 right-0 bottom-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent p-5">
+                                    <p className="text-white text-sm md:text-base font-medium">{img.caption}</p>
+                                </div>
+                            )}
+                        </div>
+                    ))}
             </div>
 
             <button
