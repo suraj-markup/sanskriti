@@ -42,7 +42,7 @@ export default function EnrollPopup({ onClose }) {
                     <span className="material-symbols-outlined text-xl">close</span>
                 </button>
 
-                <div className="px-8 pb-8 pt-6">
+                <div className="px-6 md:px-8 pb-8 pt-6">
                     {submitted ? (
                         <div className="text-center py-8">
                             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
@@ -78,7 +78,7 @@ export default function EnrollPopup({ onClose }) {
                                         <input
                                             type="text" name="name" required value={form.name} onChange={handleChange}
                                             placeholder="Enter Full Name"
-                                            className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 text-sm transition-all"
+                                            className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 text-base transition-all"
                                             style={{ '--tw-ring-color': '#1e3a5f33' }}
                                         />
                                     </div>
@@ -92,7 +92,7 @@ export default function EnrollPopup({ onClose }) {
                                             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">school</span>
                                             <select
                                                 name="classLevel" required value={form.classLevel} onChange={handleChange}
-                                                className="w-full pl-9 pr-3 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 focus:outline-none text-sm appearance-none"
+                                                className="w-full pl-9 pr-3 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 focus:outline-none text-base appearance-none"
                                             >
                                                 <option value="">Select Class</option>
                                                 <option>Class VIII</option>
@@ -108,7 +108,7 @@ export default function EnrollPopup({ onClose }) {
                                             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">assignment</span>
                                             <select
                                                 name="board" required value={form.board} onChange={handleChange}
-                                                className="w-full pl-9 pr-3 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 focus:outline-none text-sm appearance-none"
+                                                className="w-full pl-9 pr-3 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 focus:outline-none text-base appearance-none"
                                             >
                                                 <option value="">Select Board</option>
                                                 <option>BSEB</option>
@@ -127,7 +127,7 @@ export default function EnrollPopup({ onClose }) {
                                         <input
                                             type="tel" name="phone" required value={form.phone} onChange={handleChange}
                                             placeholder="Enter Mobile Number"
-                                            className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none text-sm transition-all"
+                                            className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none text-base transition-all"
                                         />
                                     </div>
                                 </div>

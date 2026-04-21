@@ -88,7 +88,7 @@ export default function Contact() {
                                             <input
                                                 type="text" name="name" required value={form.name} onChange={handleChange}
                                                 placeholder="Your name or child's name"
-                                                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-sm transition-all"
+                                                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-base transition-all"
                                             />
                                         </div>
                                         <div>
@@ -96,7 +96,7 @@ export default function Contact() {
                                             <input
                                                 type="tel" name="phone" required value={form.phone} onChange={handleChange}
                                                 placeholder="+91 XXXXX XXXXX"
-                                                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-sm transition-all"
+                                                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-base transition-all"
                                             />
                                         </div>
                                         <div>
@@ -104,14 +104,14 @@ export default function Contact() {
                                             <input
                                                 type="email" name="email" value={form.email} onChange={handleChange}
                                                 placeholder="your@email.com"
-                                                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-sm transition-all"
+                                                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-base transition-all"
                                             />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-slate-700 mb-1.5">Class Interested In *</label>
                                             <select
                                                 name="classLevel" required value={form.classLevel} onChange={handleChange}
-                                                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-sm transition-all"
+                                                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-base transition-all"
                                             >
                                                 <option value="">Select a class</option>
                                                 <option>Class VIII</option>
@@ -124,7 +124,7 @@ export default function Contact() {
                                             <textarea
                                                 name="message" rows={4} value={form.message} onChange={handleChange}
                                                 placeholder="Any specific questions or requirements..."
-                                                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-sm transition-all resize-none"
+                                                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary text-base transition-all resize-none"
                                             />
                                         </div>
                                         <button

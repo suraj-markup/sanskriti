@@ -75,26 +75,30 @@ export default function ImageCarousel({
             <button
                 onClick={prev}
                 aria-label="Previous image"
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-sm flex items-center justify-center transition-colors"
+                className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-sm flex items-center justify-center transition-colors"
             >
                 <span className="material-symbols-outlined text-xl">chevron_left</span>
             </button>
             <button
                 onClick={next}
                 aria-label="Next image"
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-sm flex items-center justify-center transition-colors"
+                className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-sm flex items-center justify-center transition-colors"
             >
                 <span className="material-symbols-outlined text-xl">chevron_right</span>
             </button>
 
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+            <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex">
                 {images.map((_, i) => (
                     <button
                         key={i}
                         onClick={() => goTo(i)}
                         aria-label={`Go to slide ${i + 1}`}
-                        className={`h-1.5 rounded-full transition-all ${i === index ? 'w-6 bg-white' : 'w-2 bg-white/60 hover:bg-white/80'}`}
-                    />
+                        className="p-2 group"
+                    >
+                        <span
+                            className={`block h-1.5 rounded-full transition-all ${i === index ? 'w-6 bg-white' : 'w-2 bg-white/60 group-hover:bg-white/80'}`}
+                        />
+                    </button>
                 ))}
             </div>
         </div>

@@ -28,20 +28,20 @@ export default function Home({ onEnroll }) {
     return (
         <div className="w-full">
             {/* Hero */}
-            <section className="relative h-[650px] w-full overflow-hidden">
+            <section className="relative min-h-[580px] md:h-[650px] w-full overflow-hidden">
                 <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/classroom-smartboard.png')" }}>
                     <div className="absolute inset-0 hero-gradient"></div>
                 </div>
-                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center items-start">
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[580px] md:h-full flex flex-col justify-center items-start py-16 md:py-0">
                     <div className="max-w-2xl space-y-6">
                         <div className="inline-flex items-center gap-2 bg-white/10 border border-white/30 px-4 py-1.5 rounded-full text-white font-semibold text-sm backdrop-blur-sm">
                             <span className="material-symbols-outlined text-sm">star</span>
                             <span>ADMISSIONS OPEN 2026-27</span>
                         </div>
-                        <h1 className="text-white text-5xl md:text-6xl font-extrabold leading-tight">
+                        <h1 className="text-white text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight">
                             Achieve Board Success with <span className="text-amber-300">The Sanskriti Academy</span>
                         </h1>
-                        <p className="text-slate-200 text-xl font-light">
+                        <p className="text-slate-200 text-base md:text-xl font-light">
                             Defining Success, The Sanskriti Way. Join the league of toppers and unlock your true potential with our expert-led programs.
                         </p>
                         <div className="flex flex-wrap gap-4 pt-4">

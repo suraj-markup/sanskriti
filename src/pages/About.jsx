@@ -49,7 +49,7 @@ export default function About({ onEnroll }) {
                             <div className="absolute -inset-4 bg-gradient-to-tr from-slate-100 to-amber-100 rounded-3xl -z-10 blur-2xl"></div>
                             <img
                                 alt="Dedicated study environment"
-                                className="rounded-3xl shadow-2xl object-cover w-full h-[450px]"
+                                className="rounded-3xl shadow-2xl object-cover w-full aspect-[4/3] md:aspect-auto md:h-[450px]"
                                 src="/images/mentorship-session.png"
                             />
                             <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-2xl shadow-xl max-w-xs border border-slate-100">

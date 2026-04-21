@@ -64,9 +64,9 @@ export default function Gallery() {
                                     loading="lazy"
                                     className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent pt-10 md:opacity-0 md:group-hover:opacity-100 transition-opacity flex items-end p-3">
                                     <div className="text-left">
-                                        <p className="text-white text-sm font-medium">{img.caption}</p>
+                                        <p className="text-white text-sm font-medium leading-snug">{img.caption}</p>
                                         <span className="text-[11px] text-white/80">{img.category}</span>
                                     </div>
                                 </div>

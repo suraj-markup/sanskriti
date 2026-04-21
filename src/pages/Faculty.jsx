@@ -53,7 +53,7 @@ export default function Faculty({ onEnroll }) {
                                     <img
                                         src={member.img}
                                         alt={member.name}
-                                        className="relative rounded-3xl shadow-2xl object-cover w-full h-[450px] group-hover:scale-[1.02] transition-transform duration-500"
+                                        className="relative rounded-3xl shadow-2xl object-cover w-full aspect-[4/5] md:aspect-auto md:h-[450px] group-hover:scale-[1.02] transition-transform duration-500"
                                     />
                                 </div>
                                 <div className="w-full md:w-3/5 space-y-6">
