@@ -141,9 +141,9 @@ export default function Home({ onEnroll }) {
                     </div>
 
                     {videos.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-4 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
                             {videos.slice(0, 3).map(v => (
-                                <div key={v.id}>
+                                <div key={v.id} className="shrink-0 w-[85%] md:w-auto snap-center">
                                     <YouTubeEmbed videoId={v.id} title={v.title} />
                                     <p className="mt-3 font-semibold text-deep-blue text-sm">{v.title}</p>
                                 </div>
@@ -155,11 +155,11 @@ export default function Home({ onEnroll }) {
                             className="block group"
                             aria-label="Preview upcoming video library"
                         >
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-4 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 scroll-smooth">
                                 {['Sample Lessons', 'Concept Breakdowns', "Toppers' Journeys"].map(label => (
                                     <div
                                         key={label}
-                                        className="aspect-video rounded-xl border-2 border-dashed border-slate-200 bg-white flex flex-col items-center justify-center text-slate-400 gap-1 group-hover:border-primary/40 group-hover:text-primary transition-colors"
+                                        className="shrink-0 w-[85%] md:w-auto snap-center aspect-video rounded-xl border-2 border-dashed border-slate-200 bg-white flex flex-col items-center justify-center text-slate-400 gap-1 group-hover:border-primary/40 group-hover:text-primary transition-colors"
                                     >
                                         <span className="material-symbols-outlined text-4xl">play_circle</span>
                                         <span className="text-sm font-medium">{label}</span>
