@@ -99,7 +99,7 @@ export default function ImageCarousel({
             </button>
 
             <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex">
-                {images.map((_, i) => (
+                {Array.from({ length: count }).map((_, i) => (
                     <button
                         key={i}
                         onClick={() => goTo(i)}
