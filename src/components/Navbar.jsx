@@ -2,12 +2,12 @@
 import { Link, useLocation } from 'react-router-dom';
 
 const navLinks = [
-    { label: 'Home', path: '/' },
-    { label: 'About Us', path: '/about' },
+    { label: 'About', path: '/about' },
     { label: 'Courses', path: '/courses' },
     { label: 'Results', path: '/results' },
     { label: 'Faculty', path: '/faculty' },
     { label: 'Gallery', path: '/gallery' },
+    { label: 'Videos', path: '/videos' },
     { label: 'Contact', path: '/contact' },
 ];
 
@@ -20,9 +20,11 @@ export default function Navbar({ onEnroll }) {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20">
                     <Link to="/" className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
-                            <span className="material-symbols-outlined text-3xl">school</span>
-                        </div>
+                        <img
+                            src="/logo.png"
+                            alt="The Sanskriti Academy"
+                            className="w-11 h-11 object-contain"
+                        />
                         <div className="flex flex-col">
                             <span className="text-primary text-xl font-bold leading-none tracking-tight uppercase">The Sanskriti Academy</span>
                             <span className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold">Excellence in Education</span>

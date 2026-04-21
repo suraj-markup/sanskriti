@@ -19,11 +19,11 @@ export default function Results({ onEnroll }) {
     return (
         <div className="w-full">
             {/* Hero */}
-            <header className="relative py-24 overflow-hidden bg-gradient-to-br from-green-700 to-emerald-900 text-white">
+            <header className="relative py-24 overflow-hidden text-white" style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%)' }}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                     <span className="inline-block px-4 py-1.5 rounded-full bg-white/20 text-white font-semibold text-sm mb-4 uppercase tracking-wider">Our Track Record</span>
                     <h1 className="text-4xl md:text-6xl font-extrabold mb-6">Academic Results &amp; Testimonials</h1>
-                    <p className="max-w-3xl mx-auto text-xl text-green-100 leading-relaxed">
+                    <p className="max-w-3xl mx-auto text-xl text-slate-200 leading-relaxed">
                         Our students' success is the truest measure of our excellence. Year after year, Sanskriti Academy students outperform their peers.
                     </p>
                 </div>
@@ -90,7 +90,7 @@ export default function Results({ onEnroll }) {
                                     </div>
                                     <div>
                                         <p className="font-bold text-slate-900">{name}</p>
-                                        <p className="text-sm text-slate-500">{cls} Â· {marks} Â· {subject}</p>
+                                        <p className="text-sm text-slate-500">{cls} · {marks} · {subject}</p>
                                     </div>
                                 </div>
                             </div>
@@ -104,7 +104,7 @@ export default function Results({ onEnroll }) {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
                     <div className="text-white text-center md:text-left">
                         <h2 className="text-3xl font-bold">Be our next success story</h2>
-                        <p className="text-purple-100 opacity-90 mt-2">Join the Sanskriti family and unlock your potential.</p>
+                        <p className="text-slate-200 opacity-90 mt-2">Join the Sanskriti family and unlock your potential.</p>
                     </div>
                     <button onClick={onEnroll} className="bg-white text-primary px-10 py-4 rounded-xl font-bold text-lg hover:shadow-2xl transition-all uppercase tracking-wide">Enroll Today</button>
                 </div>

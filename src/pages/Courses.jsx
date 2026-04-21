@@ -5,14 +5,14 @@ const courses = [
     {
         class: 'Class VIII',
         board: 'BSEB & CBSE',
-        color: 'from-purple-600 to-purple-800',
+        color: 'from-slate-700 to-slate-900',
         subjects: ['Mathematics', 'Science', 'Social Studies', 'English', 'Hindi'],
         features: ['Foundation building', 'Weekly tests', 'Study material provided', 'Parent feedback sessions'],
     },
     {
         class: 'Class IX',
         board: 'BSEB & CBSE',
-        color: 'from-blue-600 to-blue-800',
+        color: 'from-[#1e3a5f] to-[#0f172a]',
         subjects: ['Mathematics', 'Science', 'Social Studies', 'English', 'Hindi'],
         features: ['Board prep foundation', 'Mock examinations', 'Doubt clearing sessions', 'Performance tracking'],
         featured: true,
@@ -20,7 +20,7 @@ const courses = [
     {
         class: 'Class X',
         board: 'BSEB & CBSE',
-        color: 'from-orange-500 to-orange-700',
+        color: 'from-amber-700 to-amber-900',
         subjects: ['Mathematics', 'Science', 'Social Studies', 'English', 'Hindi'],
         features: ['Intensive board prep', 'Previous year papers', 'Personalized attention', 'Daily practice tests'],
     },
@@ -30,11 +30,11 @@ export default function Courses({ onEnroll }) {
     return (
         <div className="w-full">
             {/* Hero */}
-            <header className="relative py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1e1b4b 0%, #581c87 100%)' }}>
+            <header className="relative py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%)' }}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                     <span className="inline-block px-4 py-1.5 rounded-full bg-white/20 text-white font-semibold text-sm mb-4 uppercase tracking-wider">Our Programs</span>
                     <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6">Courses Offered</h1>
-                    <p className="max-w-3xl mx-auto text-xl text-purple-200 leading-relaxed">
+                    <p className="max-w-3xl mx-auto text-xl text-slate-200 leading-relaxed">
                         Comprehensive board-level preparation for Classes VIII, IX, and X. Covering all subjects for both BSEB and CBSE boards.
                     </p>
                 </div>
@@ -97,9 +97,9 @@ export default function Courses({ onEnroll }) {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {[
-                            { time: 'Morning Batch', hours: '7:00 AM â€“ 9:00 AM', days: 'Mon â€“ Sat', icon: 'wb_sunny' },
-                            { time: 'Afternoon Batch', hours: '12:00 PM â€“ 2:00 PM', days: 'Mon â€“ Sat', icon: 'partly_cloudy_day' },
-                            { time: 'Evening Batch', hours: '5:00 PM â€“ 7:00 PM', days: 'Mon â€“ Sat', icon: 'nightlight' },
+                            { time: 'Morning Batch', hours: '7:00 AM – 9:00 AM', days: 'Mon – Sat', icon: 'wb_sunny' },
+                            { time: 'Afternoon Batch', hours: '12:00 PM – 2:00 PM', days: 'Mon – Sat', icon: 'partly_cloudy_day' },
+                            { time: 'Evening Batch', hours: '5:00 PM – 7:00 PM', days: 'Mon – Sat', icon: 'nightlight' },
                         ].map(({ time, hours, days, icon }) => (
                             <div key={time} className="bg-white rounded-2xl p-8 shadow-md border border-slate-100 text-center hover:shadow-xl transition-shadow">
                                 <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mx-auto mb-6">
@@ -119,7 +119,7 @@ export default function Courses({ onEnroll }) {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
                     <div className="text-white text-center md:text-left">
                         <h2 className="text-3xl font-bold">Secure your seat today</h2>
-                        <p className="text-purple-100 opacity-90 mt-2">Limited seats available. New session starts 27 January 2026.</p>
+                        <p className="text-slate-200 opacity-90 mt-2">Limited seats available. New session starts 27 January 2026.</p>
                     </div>
                     <button onClick={onEnroll} className="bg-white text-primary px-10 py-4 rounded-xl font-bold text-lg hover:shadow-2xl transition-all uppercase tracking-wide">Enquire Now</button>
                 </div>

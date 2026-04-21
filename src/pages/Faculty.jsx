@@ -3,12 +3,20 @@ import { Link } from 'react-router-dom';
 
 const faculty = [
     {
+        name: 'Vivek Prakash',
+        role: 'Director & Founder',
+        subjects: 'Social Studies, Hindi, English (VIII–X)',
+        experience: '12+ Years',
+        bio: 'Driving the vision of academic excellence at The Sanskriti Academy. Expert in helping students excel in humanities and social sciences.',
+        img: '/teachers/vivek.png',
+    },
+    {
         name: 'Navneet Prakash',
-        role: 'Director & Mathematics Specialist',
+        role: 'Mathematics Specialist',
         subjects: 'Mathematics (VIII-X)',
         experience: '10+ Years',
         bio: 'Specialist in conceptual clarity and advanced problem-solving. Known for making complex topics approachable for board students.',
-        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuATXBC84VRnnI-OAuNwMACtwOHzTDh_4BgTKwJ1yZHEoyVipaU6UT_pSsvp2d747z1Kk6ERh66nzrHJSa3MnrERAv5tlKbDXmLHk4B741IR97f65QzXVOEK4-uzmpHvAZMYQlkyy8P7nF4QtLKhcozRggRhv8YyOO53oGAdBWAWmJv4gDKHfjP_NUf4Wl4PtHLvnDsJ6fv6pK0rNEINWpwSqT6EkHPh1_SMv2FC2__yW52XcQCflB3bxYVTPr38_YdYRWGYnmIe-Y37',
+        img: '/teachers/navneet.png',
     },
     {
         name: 'Priyanka Prakash',
@@ -16,15 +24,7 @@ const faculty = [
         subjects: 'Science (VIII-X)',
         experience: '8+ Years',
         bio: 'Providing personalized mentorship and academic guidance. Expert in breaking down complex science concepts with real-world examples.',
-        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD5hNeDTVo0c_6BR9FVfUQ8jdMAwLDDSYydsn347MfUMhg-6B15X-sXdWE0wwzCWhlvbrv1E3dTE64si8scHuwrtlwlQHCPcYeA6DvkEDi35AiljFFgqE45S7ivhMwo94dPMRjPTPkCW70HY3Y8Xb9Nq1w_xhL09o7LIUqwZdMVlP0yJjalbj5Q4OHQlGJ5Sa2lfkLpeoCf2Rfa-vaK0MnZmwcoP1UfE0g56vW-4OtO6iMyKaemrS4FhvYeGWsR5EZ19vcaZfoJF3PW',
-    },
-    {
-        name: 'Vivek Prakash',
-        role: 'Social Science & Humanities Expert',
-        subjects: 'Social Studies, Hindi, English (VIIIâ€“X)',
-        experience: '12+ Years',
-        bio: 'Driving the vision of academic excellence at The Sanskriti Academy. Expert in helping students excel in humanities and social sciences.',
-        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuByBbe14HMC27uZD2Y9mckvY9fxnTeGQKDn55DjydR4xCDyvst7-904oNxO2MVdMMQzwWb7W_YeMcneC8-VeWFHYTz-i75ihuF8JyugMHSpFCHZOrgv_FITzW2i2HQKZnGDeRzEAoGjpHnYkyI48DuVllaGFtTppwhDv87tu_Ngnz-Kn48gZkGuc8IPCr6BoefXFAsx9IHkdS7AFRMFR2G8WG4a3poHoZAdJ62JbJaaCbr6ZAxkB18S6BuTmvhLzaScF2VgDYTiccYu',
+        img: '/teachers/priyanka.png',
     },
 ];
 
@@ -32,12 +32,12 @@ export default function Faculty({ onEnroll }) {
     return (
         <div className="w-full">
             {/* Hero */}
-            <header className="relative py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1e1b4b 0%, #581c87 100%)' }}>
+            <header className="relative py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%)' }}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                     <span className="inline-block px-4 py-1.5 rounded-full bg-white/20 text-white font-semibold text-sm mb-4 uppercase tracking-wider">Our Mentors</span>
                     <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6">Expert Faculty</h1>
-                    <p className="max-w-3xl mx-auto text-xl text-purple-200 leading-relaxed">
-                        The backbone of The Sanskriti Academy â€” dedicated professionals committed to transforming every student's academic journey.
+                    <p className="max-w-3xl mx-auto text-xl text-slate-200 leading-relaxed">
+                        The backbone of The Sanskriti Academy — dedicated professionals committed to transforming every student's academic journey.
                     </p>
                 </div>
             </header>
@@ -98,7 +98,7 @@ export default function Faculty({ onEnroll }) {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {[
-                            { icon: 'psychology', title: 'Concept First', desc: 'We ensure every student understands fundamentals before moving to application â€” building unshakeable foundations.' },
+                            { icon: 'psychology', title: 'Concept First', desc: 'We ensure every student understands fundamentals before moving to application — building unshakeable foundations.' },
                             { icon: 'fact_check', title: 'Test & Improve', desc: 'Weekly tests and regular mock exams keep students board-ready throughout the year.' },
                             { icon: 'groups', title: 'Never Left Behind', desc: 'Dedicated doubt-clearing sessions and small batch sizes ensure personalized attention for every student.' },
                         ].map(({ icon, title, desc }) => (
@@ -119,7 +119,7 @@ export default function Faculty({ onEnroll }) {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
                     <div className="text-white text-center md:text-left">
                         <h2 className="text-3xl font-bold">Learn from the best</h2>
-                        <p className="text-purple-100 opacity-90 mt-2">Book a free demo class with our faculty today.</p>
+                        <p className="text-slate-200 opacity-90 mt-2">Book a free demo class with our faculty today.</p>
                     </div>
                     <button onClick={onEnroll} className="bg-white text-primary px-10 py-4 rounded-xl font-bold text-lg hover:shadow-2xl transition-all uppercase tracking-wide">Book Free Demo</button>
                 </div>

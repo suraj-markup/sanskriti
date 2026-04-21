@@ -1,5 +1,9 @@
 ﻿import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import ImageCarousel from '../components/ImageCarousel';
+import YouTubeEmbed from '../components/YouTubeEmbed';
+import { galleryImages } from '../data/galleryImages';
+import { videos } from '../data/videos';
 
 export default function Home({ onEnroll }) {
     // Auto-popup after user scrolls 40% of the page (once per visit)
@@ -25,7 +29,7 @@ export default function Home({ onEnroll }) {
         <div className="w-full">
             {/* Hero */}
             <section className="relative h-[650px] w-full overflow-hidden">
-                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBg6-W-tYCSAccZeMiaaJI5pMbVAxEoZ4ETgyE7BeWL3SbpKV67AQheRqN79XkRxzwhsWqGdUTTrg5qgN9uID9YauqO6sUqQWScnTDBL9lDWZCVBwGGYhWG-Ys1U9Z0UfmBpkOrkM4-ZeLVMM79elLaLYFHnWUEyZEYJdpULixeF-vF6HLLt9rQrdT_V44w36u9kzPaElhpYaIt9wnDEHFR5EHOULNL99D_DHKZOR_vsnhuXn9vpVbf8uVXDM96j88y8YkpbGAomoif')" }}>
+                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/classroom-smartboard.png')" }}>
                     <div className="absolute inset-0 hero-gradient"></div>
                 </div>
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center items-start">
@@ -35,7 +39,7 @@ export default function Home({ onEnroll }) {
                             <span>ADMISSIONS OPEN 2026-27</span>
                         </div>
                         <h1 className="text-white text-5xl md:text-6xl font-extrabold leading-tight">
-                            Achieve Board Success with <span className="text-purple-300">The Sanskriti Academy</span>
+                            Achieve Board Success with <span className="text-amber-300">The Sanskriti Academy</span>
                         </h1>
                         <p className="text-slate-200 text-xl font-light">
                             Defining Success, The Sanskriti Way. Join the league of toppers and unlock your true potential with our expert-led programs.
@@ -89,17 +93,95 @@ export default function Home({ onEnroll }) {
                 </div>
             </section>
 
+            {/* Life at Sanskriti — carousel of real classroom / campus photos */}
+            <section className="py-20 bg-white border-t border-slate-100">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-10">
+                        <h3 className="text-primary font-semibold uppercase tracking-wider text-xs mb-2">A Glimpse Inside</h3>
+                        <h2 className="text-deep-blue text-3xl md:text-4xl font-bold">Life at Sanskriti</h2>
+                        <p className="mt-3 text-slate-600 max-w-xl mx-auto">
+                            Classrooms, mentorship sessions and the moments that matter — straight from our campus.
+                        </p>
+                    </div>
+                    <ImageCarousel images={galleryImages} />
+                    <div className="text-center mt-8">
+                        <Link
+                            to="/gallery"
+                            className="inline-flex items-center gap-1.5 text-primary font-semibold hover:text-primary-hover transition-colors"
+                        >
+                            View full gallery
+                            <span className="material-symbols-outlined text-base">arrow_forward</span>
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* Watch Us Teach — YouTube teaser (coming soon until videos.js is populated) */}
+            <section className="py-20 bg-slate-50 border-t border-slate-100">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+                        <div>
+                            <h3 className="text-primary font-semibold uppercase tracking-wider text-xs mb-2">Watch Us Teach</h3>
+                            <h2 className="text-deep-blue text-3xl md:text-4xl font-bold">Sample Lessons on YouTube</h2>
+                        </div>
+                        {videos.length > 0 ? (
+                            <Link
+                                to="/videos"
+                                className="inline-flex items-center gap-1.5 text-primary font-semibold hover:text-primary-hover transition-colors"
+                            >
+                                View all videos
+                                <span className="material-symbols-outlined text-base">arrow_forward</span>
+                            </Link>
+                        ) : (
+                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold uppercase tracking-wider self-start md:self-auto">
+                                <span className="w-2 h-2 rounded-full bg-amber-600 animate-pulse" />
+                                Coming Soon
+                            </span>
+                        )}
+                    </div>
+
+                    {videos.length > 0 ? (
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {videos.slice(0, 3).map(v => (
+                                <div key={v.id}>
+                                    <YouTubeEmbed videoId={v.id} title={v.title} />
+                                    <p className="mt-3 font-semibold text-deep-blue text-sm">{v.title}</p>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <Link
+                            to="/videos"
+                            className="block group"
+                            aria-label="Preview upcoming video library"
+                        >
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {['Sample Lessons', 'Concept Breakdowns', "Toppers' Journeys"].map(label => (
+                                    <div
+                                        key={label}
+                                        className="aspect-video rounded-xl border-2 border-dashed border-slate-200 bg-white flex flex-col items-center justify-center text-slate-400 gap-1 group-hover:border-primary/40 group-hover:text-primary transition-colors"
+                                    >
+                                        <span className="material-symbols-outlined text-4xl">play_circle</span>
+                                        <span className="text-sm font-medium">{label}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </Link>
+                    )}
+                </div>
+            </section>
+
             {/* Faculty Preview */}
             <section className="py-20 bg-slate-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h3 className="text-primary font-bold uppercase tracking-widest text-sm mb-2">Meet Our Mentors</h3>
                     <h2 className="text-deep-blue text-4xl font-extrabold">Our Expert Faculty</h2>
-                    <p className="mt-4 text-slate-600 max-w-2xl mx-auto mb-12">The backbone of our academy â€” dedicated professionals committed to your academic excellence.</p>
+                    <p className="mt-4 text-slate-600 max-w-2xl mx-auto mb-12">The backbone of our academy — dedicated professionals committed to your academic excellence.</p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                         {[
-                            { name: 'Navneet Prakash', role: 'Director & Mathematics Specialist', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuATXBC84VRnnI-OAuNwMACtwOHzTDh_4BgTKwJ1yZHEoyVipaU6UT_pSsvp2d747z1Kk6ERh66nzrHJSa3MnrERAv5tlKbDXmLHk4B741IR97f65QzXVOEK4-uzmpHvAZMYQlkyy8P7nF4QtLKhcozRggRhv8YyOO53oGAdBWAWmJv4gDKHfjP_NUf4Wl4PtHLvnDsJ6fv6pK0rNEINWpwSqT6EkHPh1_SMv2FC2__yW52XcQCflB3bxYVTPr38_YdYRWGYnmIe-Y37' },
-                            { name: 'Priyanka Prakash', role: 'Science HOD & Life Coach', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD5hNeDTVo0c_6BR9FVfUQ8jdMAwLDDSYydsn347MfUMhg-6B15X-sXdWE0wwzCWhlvbrv1E3dTE64si8scHuwrtlwlQHCPcYeA6DvkEDi35AiljFFgqE45S7ivhMwo94dPMRjPTPkCW70HY3Y8Xb9Nq1w_xhL09o7LIUqwZdMVlP0yJjalbj5Q4OHQlGJ5Sa2lfkLpeoCf2Rfa-vaK0MnZmwcoP1UfE0g56vW-4OtO6iMyKaemrS4FhvYeGWsR5EZ19vcaZfoJF3PW' },
-                            { name: 'Vivek Prakash', role: 'Social Science & Humanities Expert', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuByBbe14HMC27uZD2Y9mckvY9fxnTeGQKDn55DjydR4xCDyvst7-904oNxO2MVdMMQzwWb7W_YeMcneC8-VeWFHYTz-i75ihuF8JyugMHSpFCHZOrgv_FITzW2i2HQKZnGDeRzEAoGjpHnYkyI48DuVllaGFtTppwhDv87tu_Ngnz-Kn48gZkGuc8IPCr6BoefXFAsx9IHkdS7AFRMFR2G8WG4a3poHoZAdJ62JbJaaCbr6ZAxkB18S6BuTmvhLzaScF2VgDYTiccYu' },
+                            { name: 'Vivek Prakash', role: 'Director & Founder', img: '/teachers/vivek.png' },
+                            { name: 'Navneet Prakash', role: 'Mathematics Specialist', img: '/teachers/navneet.png' },
+                            { name: 'Priyanka Prakash', role: 'Science HOD & Life Coach', img: '/teachers/priyanka.png' },
                         ].map(({ name, role, img }) => (
                             <div key={name} className="bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 group">
                                 <div className="h-72 overflow-hidden">
@@ -113,7 +195,7 @@ export default function Home({ onEnroll }) {
                         ))}
                     </div>
                     <Link to="/faculty" className="mt-10 inline-block bg-primary text-white px-8 py-3 rounded-xl font-bold hover:bg-primary-hover transition-all">
-                        Meet All Faculty â†’
+                        Meet All Faculty →
                     </Link>
                 </div>
             </section>
@@ -123,7 +205,7 @@ export default function Home({ onEnroll }) {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
                     <div className="text-white text-center md:text-left">
                         <h2 className="text-3xl font-bold">Ready to start your journey?</h2>
-                        <p className="text-purple-100 opacity-90 mt-2">Get personalized counseling and a roadmap to success today.</p>
+                        <p className="text-slate-200 opacity-90 mt-2">Get personalized counseling and a roadmap to success today.</p>
                     </div>
                     <button
                         onClick={onEnroll}
