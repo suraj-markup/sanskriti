@@ -5,7 +5,6 @@ const faculty = [
     {
         name: 'Vivek Prakash',
         role: 'Director',
-        subjects: 'Social Studies, Hindi, English (VIII–X)',
         experience: '12+ Years',
         bio: 'Driving the vision of academic excellence at The Sanskriti Academy. Expert in helping students excel in humanities and social sciences.',
         img: '/teachers/vivek.png',
@@ -62,21 +61,25 @@ export default function Faculty({ onEnroll }) {
                                         <h2 className="text-4xl font-extrabold text-deep-blue mt-2">{member.name}</h2>
                                     </div>
                                     <p className="text-slate-600 text-lg leading-relaxed">{member.bio}</p>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="bg-background-light rounded-xl p-4 border border-slate-100">
-                                            <div className="flex items-center gap-2 text-primary mb-1">
-                                                <span className="material-symbols-outlined text-sm">menu_book</span>
-                                                <span className="text-xs font-bold uppercase tracking-widest">Subjects</span>
+                                    <div className="flex flex-wrap gap-4">
+                                        {member.subjects && (
+                                            <div className="bg-background-light rounded-xl p-4 border border-slate-100 flex-1 min-w-[200px]">
+                                                <div className="flex items-center gap-2 text-primary mb-1">
+                                                    <span className="material-symbols-outlined text-sm">menu_book</span>
+                                                    <span className="text-xs font-bold uppercase tracking-widest">Subjects</span>
+                                                </div>
+                                                <p className="text-slate-700 font-semibold text-sm">{member.subjects}</p>
                                             </div>
-                                            <p className="text-slate-700 font-semibold text-sm">{member.subjects}</p>
-                                        </div>
-                                        <div className="bg-background-light rounded-xl p-4 border border-slate-100">
-                                            <div className="flex items-center gap-2 text-primary mb-1">
-                                                <span className="material-symbols-outlined text-sm">workspace_premium</span>
-                                                <span className="text-xs font-bold uppercase tracking-widest">Experience</span>
+                                        )}
+                                        {member.experience && (
+                                            <div className="bg-background-light rounded-xl p-4 border border-slate-100 flex-1 min-w-[200px]">
+                                                <div className="flex items-center gap-2 text-primary mb-1">
+                                                    <span className="material-symbols-outlined text-sm">workspace_premium</span>
+                                                    <span className="text-xs font-bold uppercase tracking-widest">Experience</span>
+                                                </div>
+                                                <p className="text-slate-700 font-semibold text-sm">{member.experience}</p>
                                             </div>
-                                            <p className="text-slate-700 font-semibold text-sm">{member.experience}</p>
-                                        </div>
+                                        )}
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <span className="material-symbols-outlined text-primary/40">alternate_email</span>
