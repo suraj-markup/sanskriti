@@ -100,14 +100,14 @@ export default function About({ onEnroll }) {
                             />
                             <div className="absolute bottom-6 left-6 right-6 bg-white/95 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-slate-200">
                                 <p className="font-bold text-xl text-slate-900">Vivek Prakash</p>
-                                <p className="text-accent text-sm font-semibold tracking-widest uppercase">Director &amp; Founder</p>
+                                <p className="text-accent text-sm font-semibold tracking-widest uppercase">Director</p>
                             </div>
                         </div>
                         <div className="w-full md:w-7/12">
                             <span className="text-accent font-bold uppercase tracking-widest text-sm">A Message from the Director</span>
                             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-4 mb-8 leading-tight">Bridging the Gap Between Effort and Results</h2>
                             <div className="space-y-6 text-slate-600 text-lg leading-relaxed">
-                                <p>"When I founded The Sanskriti Academy, I saw many hardworking students struggling not because they lacked talent, but because they lacked a structured path. My goal was simple: to bring world-class coaching standards to our own city."</p>
+                                <p>"When The Sanskriti Academy was founded, we saw many hardworking students struggling not because they lacked talent, but because they lacked a structured path. Our goal was simple: to bring world-class coaching standards to our own city."</p>
                                 <p>"We treat every student's board exam as our own. Our focus on Classes VIII-X is intentional — these are the most formative years where academic discipline is built."</p>
                                 <p>"To the parents, I promise this: your child's growth is our priority. We provide the guidance and the discipline; they provide the effort. Together, we achieve excellence."</p>
                             </div>

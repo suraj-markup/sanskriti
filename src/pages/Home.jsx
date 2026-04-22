@@ -171,8 +171,8 @@ export default function Home({ onEnroll }) {
                     <p className="mt-4 text-slate-600 max-w-2xl mx-auto mb-12">The backbone of our academy — dedicated professionals committed to your academic excellence.</p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                         {[
-                            { name: 'Vivek Prakash', role: 'Director & Founder', img: '/teachers/vivek.png' },
-                            { name: 'Navneet Prakash', role: 'Mathematics Specialist', img: '/teachers/navneet.png' },
+                            { name: 'Vivek Prakash', role: 'Director', img: '/teachers/vivek.png' },
+                            { name: 'Navneet Prakash', role: 'Founder & All Subjects Specialist', img: '/teachers/navneet.png' },
                             { name: 'Priyanka Prakash', role: 'Science HOD & Life Coach', img: '/teachers/priyanka.png' },
                         ].map(({ name, role, img }) => (
                             <div key={name} className="bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 group">

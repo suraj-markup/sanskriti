@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const faculty = [
     {
         name: 'Vivek Prakash',
-        role: 'Director & Founder',
+        role: 'Director',
         subjects: 'Social Studies, Hindi, English (VIII–X)',
         experience: '12+ Years',
         bio: 'Driving the vision of academic excellence at The Sanskriti Academy. Expert in helping students excel in humanities and social sciences.',
@@ -12,10 +12,10 @@ const faculty = [
     },
     {
         name: 'Navneet Prakash',
-        role: 'Mathematics Specialist',
-        subjects: 'Mathematics (VIII-X)',
+        role: 'Founder & All Subjects Specialist',
+        subjects: 'All Subjects (VIII–X)',
         experience: '10+ Years',
-        bio: 'Specialist in conceptual clarity and advanced problem-solving. Known for making complex topics approachable for board students.',
+        bio: 'Founder of The Sanskriti Academy and a specialist across all board subjects. Known for conceptual clarity, advanced problem-solving, and making complex topics approachable for every student.',
         img: '/teachers/navneet.png',
     },
     {

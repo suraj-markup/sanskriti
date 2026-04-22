@@ -129,8 +129,9 @@ them to web-optimised JPEG/WebP (~200–400 KB each).
 - **Email:** info@sanskriti.edu.in
 - **Classes:** VIII, IX, X (BSEB & CBSE)
 - **Tagline:** *Defining Success, The Sanskriti Way*
-- **Director & Founder:** Vivek Prakash (Social Science & Humanities)
-- **Faculty:** Navneet Prakash (Mathematics Specialist), Priyanka Prakash (Science HOD & Life Coach)
+- **Navneet Prakash** — Founder & All Subjects Specialist
+- **Vivek Prakash** — Director (Social Science & Humanities)
+- **Priyanka Prakash** — Science HOD & Life Coach
 
 ## Getting Started
 
