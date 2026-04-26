@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
     listResources,
@@ -6,9 +6,17 @@ import {
     toneClasses,
     formatFileSize,
     formatModifiedDate,
+    isFolder,
+    ROOT_FOLDER_ID,
 } from '../data/resources';
 
+const ROOT = { id: ROOT_FOLDER_ID, name: 'Study Material' };
+
 export default function Resources() {
+    // Stack-based folder navigation. path[0] is always the root folder.
+    const [path, setPath] = useState([ROOT]);
+    const currentFolder = path[path.length - 1];
+
     const [status, setStatus] = useState('loading');
     const [files, setFiles] = useState([]);
     const [configured, setConfigured] = useState(true);
@@ -16,11 +24,14 @@ export default function Resources() {
     const [filter, setFilter] = useState('All');
     const [previewFile, setPreviewFile] = useState(null);
 
+    // Refetch whenever the current folder changes.
     useEffect(() => {
         let cancelled = false;
+        setStatus('loading');
+        setFilter('All');
         (async () => {
             try {
-                const result = await listResources();
+                const result = await listResources(currentFolder.id);
                 if (cancelled) return;
                 setConfigured(result.configured);
                 setFiles(result.files);
@@ -31,19 +42,34 @@ export default function Resources() {
                 setStatus('error');
             }
         })();
-        return () => {
-            cancelled = true;
-        };
-    }, []);
+        return () => { cancelled = true; };
+    }, [currentFolder.id]);
 
-    const kindLabels = Array.from(
-        new Set(files.map(f => fileKindFromMime(f.mimeType).label))
+    const folders = useMemo(() => files.filter(isFolder), [files]);
+    const documents = useMemo(() => files.filter(f => !isFolder(f)), [files]);
+
+    const kindLabels = useMemo(
+        () => Array.from(new Set(documents.map(f => fileKindFromMime(f.mimeType).label))),
+        [documents]
     );
     const filterOptions = ['All', ...kindLabels];
-    const visibleFiles =
+    const visibleDocuments =
         filter === 'All'
-            ? files
-            : files.filter(f => fileKindFromMime(f.mimeType).label === filter);
+            ? documents
+            : documents.filter(f => fileKindFromMime(f.mimeType).label === filter);
+
+    const onSelectItem = (item) => {
+        if (isFolder(item)) {
+            setPath([...path, { id: item.id, name: item.name }]);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            setPreviewFile(item);
+        }
+    };
+
+    const onNavigateToCrumb = (idx) => {
+        setPath(path.slice(0, idx + 1));
+    };
 
     return (
         <div className="w-full">
@@ -57,31 +83,56 @@ export default function Resources() {
                 </div>
             </header>
 
-            <section className="py-16 bg-white">
+            <section className="py-12 md:py-16 bg-white">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    {path.length > 1 && <Breadcrumbs path={path} onNavigate={onNavigateToCrumb} />}
+
                     {status === 'loading' && <LoadingState />}
                     {status === 'error' && <ErrorState message={error} />}
                     {status === 'ok' && !configured && <UnconfiguredState />}
-                    {status === 'ok' && configured && files.length === 0 && <EmptyState />}
+                    {status === 'ok' && configured && files.length === 0 && (
+                        path.length === 1 ? <EmptyState /> : <EmptyFolderState />
+                    )}
+
                     {status === 'ok' && configured && files.length > 0 && (
                         <>
-                            {filterOptions.length > 2 && (
-                                <div className="flex flex-wrap gap-2 justify-center mb-10">
-                                    {filterOptions.map(opt => (
-                                        <button
-                                            key={opt}
-                                            onClick={() => setFilter(opt)}
-                                            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors border ${filter === opt
-                                                ? 'bg-primary text-white border-primary'
-                                                : 'bg-white text-slate-600 border-slate-200 hover:border-primary/40 hover:text-primary'
-                                                }`}
-                                        >
-                                            {opt}
-                                        </button>
-                                    ))}
+                            {folders.length > 0 && (
+                                <div className="mb-10">
+                                    {documents.length > 0 && (
+                                        <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">Folders</h2>
+                                    )}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {folders.map(folder => (
+                                            <FolderCard key={folder.id} folder={folder} onSelect={onSelectItem} />
+                                        ))}
+                                    </div>
                                 </div>
                             )}
-                            <FileGrid files={visibleFiles} onSelect={setPreviewFile} />
+
+                            {documents.length > 0 && (
+                                <>
+                                    {folders.length > 0 && (
+                                        <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">Files</h2>
+                                    )}
+                                    {filterOptions.length > 2 && (
+                                        <div className="flex flex-wrap gap-2 justify-center mb-8">
+                                            {filterOptions.map(opt => (
+                                                <button
+                                                    key={opt}
+                                                    onClick={() => setFilter(opt)}
+                                                    className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors border ${filter === opt
+                                                        ? 'bg-primary text-white border-primary'
+                                                        : 'bg-white text-slate-600 border-slate-200 hover:border-primary/40 hover:text-primary'
+                                                        }`}
+                                                >
+                                                    {opt}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                    <FileGrid files={visibleDocuments} onSelect={onSelectItem} />
+                                </>
+                            )}
                         </>
                     )}
                 </div>
@@ -90,6 +141,96 @@ export default function Resources() {
             {previewFile && (
                 <FilePreviewModal file={previewFile} onClose={() => setPreviewFile(null)} />
             )}
+        </div>
+    );
+}
+
+function Breadcrumbs({ path, onNavigate }) {
+    return (
+        <nav aria-label="Breadcrumb" className="mb-8">
+            <ol className="flex flex-wrap items-center gap-1.5 text-sm">
+                {path.map((crumb, idx) => {
+                    const isLast = idx === path.length - 1;
+                    return (
+                        <li key={crumb.id || 'root'} className="flex items-center gap-1.5">
+                            {idx > 0 && (
+                                <span className="material-symbols-outlined text-slate-400 text-base">chevron_right</span>
+                            )}
+                            {isLast ? (
+                                <span className="font-semibold text-deep-blue truncate max-w-[200px]">{crumb.name}</span>
+                            ) : (
+                                <button
+                                    onClick={() => onNavigate(idx)}
+                                    className="text-primary hover:text-primary-hover hover:underline font-medium truncate max-w-[200px]"
+                                >
+                                    {crumb.name}
+                                </button>
+                            )}
+                        </li>
+                    );
+                })}
+            </ol>
+        </nav>
+    );
+}
+
+function FolderCard({ folder, onSelect }) {
+    return (
+        <button
+            type="button"
+            onClick={() => onSelect(folder)}
+            className="group text-left bg-white rounded-xl border border-slate-200 hover:border-primary/40 hover:shadow-md transition-all p-5 focus:outline-none focus:ring-2 focus:ring-primary/40"
+        >
+            <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center shrink-0 bg-amber-50">
+                    <span className="material-symbols-outlined text-2xl text-amber-700" style={{ fontVariationSettings: '"FILL" 1' }}>folder</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-deep-blue group-hover:text-primary transition-colors break-words leading-snug">
+                        {folder.name}
+                    </h3>
+                    <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Folder</span>
+                </div>
+                <span className="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors shrink-0">chevron_right</span>
+            </div>
+        </button>
+    );
+}
+
+function FileGrid({ files, onSelect }) {
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {files.map(file => {
+                const kind = fileKindFromMime(file.mimeType);
+                const tone = toneClasses(kind.tone);
+                return (
+                    <button
+                        key={file.id}
+                        type="button"
+                        onClick={() => onSelect(file)}
+                        className="group text-left bg-white rounded-xl border border-slate-200 hover:border-primary/40 hover:shadow-md transition-all p-5 focus:outline-none focus:ring-2 focus:ring-primary/40"
+                    >
+                        <div className="flex items-start gap-4">
+                            <div className={`w-12 h-12 rounded-lg flex items-center justify-center shrink-0 ${tone.bg}`}>
+                                <span className={`material-symbols-outlined text-2xl ${tone.icon}`}>{kind.icon}</span>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <h3 className="font-semibold text-deep-blue group-hover:text-primary transition-colors break-words leading-snug">
+                                    {file.name}
+                                </h3>
+                                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-xs text-slate-500">
+                                    <span className="font-semibold uppercase tracking-wider">{kind.label}</span>
+                                    {file.size && <span aria-hidden>·</span>}
+                                    {file.size && <span>{formatFileSize(file.size)}</span>}
+                                    {file.modifiedTime && <span aria-hidden>·</span>}
+                                    {file.modifiedTime && <span>Updated {formatModifiedDate(file.modifiedTime)}</span>}
+                                </div>
+                            </div>
+                            <span className="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors shrink-0">visibility</span>
+                        </div>
+                    </button>
+                );
+            })}
         </div>
     );
 }
@@ -148,44 +289,6 @@ function FilePreviewModal({ file, onClose }) {
                     allow="autoplay"
                 />
             </div>
-        </div>
-    );
-}
-
-function FileGrid({ files, onSelect }) {
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {files.map(file => {
-                const kind = fileKindFromMime(file.mimeType);
-                const tone = toneClasses(kind.tone);
-                return (
-                    <button
-                        key={file.id}
-                        type="button"
-                        onClick={() => onSelect(file)}
-                        className="group text-left bg-white rounded-xl border border-slate-200 hover:border-primary/40 hover:shadow-md transition-all p-5 focus:outline-none focus:ring-2 focus:ring-primary/40"
-                    >
-                        <div className="flex items-start gap-4">
-                            <div className={`w-12 h-12 rounded-lg flex items-center justify-center shrink-0 ${tone.bg}`}>
-                                <span className={`material-symbols-outlined text-2xl ${tone.icon}`}>{kind.icon}</span>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <h3 className="font-semibold text-deep-blue group-hover:text-primary transition-colors break-words leading-snug">
-                                    {file.name}
-                                </h3>
-                                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-xs text-slate-500">
-                                    <span className="font-semibold uppercase tracking-wider">{kind.label}</span>
-                                    {file.size && <span aria-hidden>·</span>}
-                                    {file.size && <span>{formatFileSize(file.size)}</span>}
-                                    {file.modifiedTime && <span aria-hidden>·</span>}
-                                    {file.modifiedTime && <span>Updated {formatModifiedDate(file.modifiedTime)}</span>}
-                                </div>
-                            </div>
-                            <span className="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors shrink-0">visibility</span>
-                        </div>
-                    </button>
-                );
-            })}
         </div>
     );
 }
@@ -261,6 +364,18 @@ function EmptyState() {
                 Get in touch
                 <span className="material-symbols-outlined text-base">arrow_forward</span>
             </Link>
+        </div>
+    );
+}
+
+function EmptyFolderState() {
+    return (
+        <div className="max-w-xl mx-auto text-center py-10">
+            <div className="mx-auto w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 mb-5">
+                <span className="material-symbols-outlined text-4xl">folder_open</span>
+            </div>
+            <h2 className="text-lg font-bold text-deep-blue mb-1">This folder is empty</h2>
+            <p className="text-slate-500 text-sm">Nothing here yet — check back later.</p>
         </div>
     );
 }

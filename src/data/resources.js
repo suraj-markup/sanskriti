@@ -8,23 +8,31 @@
 const API_KEY = import.meta.env.VITE_GOOGLE_DRIVE_API_KEY;
 const FOLDER_ID = import.meta.env.VITE_GOOGLE_DRIVE_FOLDER_ID;
 
+export const ROOT_FOLDER_ID = FOLDER_ID;
+export const FOLDER_MIME = 'application/vnd.google-apps.folder';
+
 export function isConfigured() {
     return Boolean(API_KEY && FOLDER_ID);
 }
 
-export async function listResources() {
-    if (!isConfigured()) {
+export function isFolder(file) {
+    return file?.mimeType === FOLDER_MIME;
+}
+
+export async function listResources(folderId = FOLDER_ID) {
+    if (!API_KEY || !folderId) {
         return { configured: false, files: [] };
     }
 
     const url = new URL('https://www.googleapis.com/drive/v3/files');
-    url.searchParams.set('q', `'${FOLDER_ID}' in parents and trashed=false`);
+    // Folders first (then by recency) so they render at the top of the list.
+    url.searchParams.set('q', `'${folderId}' in parents and trashed=false`);
     url.searchParams.set('key', API_KEY);
     url.searchParams.set(
         'fields',
         'files(id,name,mimeType,modifiedTime,size,webViewLink,iconLink,thumbnailLink)'
     );
-    url.searchParams.set('orderBy', 'modifiedTime desc');
+    url.searchParams.set('orderBy', 'folder,modifiedTime desc');
     url.searchParams.set('pageSize', '100');
 
     const res = await fetch(url);
