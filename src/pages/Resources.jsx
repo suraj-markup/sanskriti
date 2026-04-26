@@ -14,6 +14,7 @@ export default function Resources() {
     const [configured, setConfigured] = useState(true);
     const [error, setError] = useState(null);
     const [filter, setFilter] = useState('All');
+    const [previewFile, setPreviewFile] = useState(null);
 
     useEffect(() => {
         let cancelled = false;
@@ -80,28 +81,89 @@ export default function Resources() {
                                     ))}
                                 </div>
                             )}
-                            <FileGrid files={visibleFiles} />
+                            <FileGrid files={visibleFiles} onSelect={setPreviewFile} />
                         </>
                     )}
                 </div>
             </section>
+
+            {previewFile && (
+                <FilePreviewModal file={previewFile} onClose={() => setPreviewFile(null)} />
+            )}
         </div>
     );
 }
 
-function FileGrid({ files }) {
+function FilePreviewModal({ file, onClose }) {
+    useEffect(() => {
+        const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+        window.addEventListener('keydown', onKey);
+        const original = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        return () => {
+            window.removeEventListener('keydown', onKey);
+            document.body.style.overflow = original;
+        };
+    }, [onClose]);
+
+    return (
+        <div
+            className="fixed inset-0 z-[200] bg-black/85 flex items-stretch md:items-center justify-center md:p-6"
+            onClick={onClose}
+            role="dialog"
+            aria-modal="true"
+            aria-label={file.name}
+        >
+            <div
+                className="relative w-full max-w-5xl h-full md:h-[88vh] bg-white md:rounded-xl overflow-hidden shadow-2xl flex flex-col"
+                onClick={(e) => e.stopPropagation()}
+            >
+                <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-200 shrink-0">
+                    <h3 className="font-semibold text-deep-blue truncate text-sm md:text-base">{file.name}</h3>
+                    <div className="flex items-center gap-1 shrink-0">
+                        <a
+                            href={file.webViewLink}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-primary hover:bg-slate-100 rounded-full transition-colors"
+                            title="Open in Drive"
+                            aria-label="Open in Drive"
+                        >
+                            <span className="material-symbols-outlined text-xl">open_in_new</span>
+                        </a>
+                        <button
+                            onClick={onClose}
+                            className="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-colors"
+                            aria-label="Close"
+                        >
+                            <span className="material-symbols-outlined text-xl">close</span>
+                        </button>
+                    </div>
+                </div>
+                <iframe
+                    key={file.id}
+                    src={`https://drive.google.com/file/d/${file.id}/preview`}
+                    title={file.name}
+                    className="flex-1 w-full bg-slate-50"
+                    allow="autoplay"
+                />
+            </div>
+        </div>
+    );
+}
+
+function FileGrid({ files, onSelect }) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {files.map(file => {
                 const kind = fileKindFromMime(file.mimeType);
                 const tone = toneClasses(kind.tone);
                 return (
-                    <a
+                    <button
                         key={file.id}
-                        href={file.webViewLink}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="group block bg-white rounded-xl border border-slate-200 hover:border-primary/40 hover:shadow-md transition-all p-5"
+                        type="button"
+                        onClick={() => onSelect(file)}
+                        className="group text-left bg-white rounded-xl border border-slate-200 hover:border-primary/40 hover:shadow-md transition-all p-5 focus:outline-none focus:ring-2 focus:ring-primary/40"
                     >
                         <div className="flex items-start gap-4">
                             <div className={`w-12 h-12 rounded-lg flex items-center justify-center shrink-0 ${tone.bg}`}>
@@ -119,9 +181,9 @@ function FileGrid({ files }) {
                                     {file.modifiedTime && <span>Updated {formatModifiedDate(file.modifiedTime)}</span>}
                                 </div>
                             </div>
-                            <span className="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors shrink-0">arrow_outward</span>
+                            <span className="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors shrink-0">visibility</span>
                         </div>
-                    </a>
+                    </button>
                 );
             })}
         </div>
