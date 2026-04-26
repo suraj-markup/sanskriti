@@ -19,9 +19,9 @@ export function isFolder(file) {
     return file?.mimeType === FOLDER_MIME;
 }
 
-export async function listResources(folderId = FOLDER_ID) {
+export async function listResources(folderId = FOLDER_ID, pageToken = null) {
     if (!API_KEY || !folderId) {
-        return { configured: false, files: [] };
+        return { configured: false, files: [], nextPageToken: null };
     }
 
     const url = new URL('https://www.googleapis.com/drive/v3/files');
@@ -30,10 +30,11 @@ export async function listResources(folderId = FOLDER_ID) {
     url.searchParams.set('key', API_KEY);
     url.searchParams.set(
         'fields',
-        'files(id,name,mimeType,modifiedTime,size,webViewLink,iconLink,thumbnailLink)'
+        'nextPageToken,files(id,name,mimeType,modifiedTime,size,webViewLink,iconLink,thumbnailLink)'
     );
     url.searchParams.set('orderBy', 'folder,modifiedTime desc');
     url.searchParams.set('pageSize', '100');
+    if (pageToken) url.searchParams.set('pageToken', pageToken);
 
     const res = await fetch(url);
     if (!res.ok) {
@@ -41,7 +42,23 @@ export async function listResources(folderId = FOLDER_ID) {
         throw new Error(`Drive API ${res.status}: ${body || res.statusText}`);
     }
     const data = await res.json();
-    return { configured: true, files: data.files || [] };
+    return {
+        configured: true,
+        files: data.files || [],
+        nextPageToken: data.nextPageToken || null,
+    };
+}
+
+// Fetch a single folder's metadata — used to rebuild a breadcrumb when the
+// user lands on /resources/:folderId cold (no router state).
+export async function getFolderInfo(folderId) {
+    if (!API_KEY || !folderId) return null;
+    const url = new URL(`https://www.googleapis.com/drive/v3/files/${folderId}`);
+    url.searchParams.set('key', API_KEY);
+    url.searchParams.set('fields', 'id,name,mimeType');
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    return res.json();
 }
 
 const KIND_BY_MIME = {

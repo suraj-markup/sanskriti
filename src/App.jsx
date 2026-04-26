@@ -39,6 +39,7 @@ function AppContent() {
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/videos" element={<Videos />} />
             <Route path="/resources" element={<Resources />} />
+            <Route path="/resources/:folderId" element={<Resources />} />
             <Route path="/contact" element={<Contact onEnroll={openPopup} />} />
           </Routes>
         </main>

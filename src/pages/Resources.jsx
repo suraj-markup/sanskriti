@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
     listResources,
+    getFolderInfo,
     fileKindFromMime,
     toneClasses,
     formatFileSize,
@@ -13,37 +14,62 @@ import {
 const ROOT = { id: ROOT_FOLDER_ID, name: 'Study Material' };
 
 export default function Resources() {
-    // Stack-based folder navigation. path[0] is always the root folder.
-    const [path, setPath] = useState([ROOT]);
-    const currentFolder = path[path.length - 1];
+    const { folderId } = useParams();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const currentFolderId = folderId || ROOT_FOLDER_ID;
 
+    const [path, setPath] = useState(() => location.state?.path || [ROOT]);
     const [status, setStatus] = useState('loading');
     const [files, setFiles] = useState([]);
+    const [nextPageToken, setNextPageToken] = useState(null);
+    const [loadingMore, setLoadingMore] = useState(false);
     const [configured, setConfigured] = useState(true);
     const [error, setError] = useState(null);
     const [filter, setFilter] = useState('All');
+    const [query, setQuery] = useState('');
     const [previewFile, setPreviewFile] = useState(null);
 
-    // Refetch whenever the current folder changes.
+    // Refetch whenever the URL folder changes.
     useEffect(() => {
         let cancelled = false;
         setStatus('loading');
+        setFiles([]);
+        setNextPageToken(null);
         setFilter('All');
-        (async () => {
-            try {
-                const result = await listResources(currentFolder.id);
+        setQuery('');
+
+        // Reconcile the breadcrumb path with the URL.
+        const statePath = location.state?.path;
+        if (statePath && statePath[statePath.length - 1].id === currentFolderId) {
+            setPath(statePath);
+        } else if (currentFolderId === ROOT_FOLDER_ID) {
+            setPath([ROOT]);
+        } else {
+            // Cold link load — show a placeholder while we fetch the folder name.
+            setPath([ROOT, { id: currentFolderId, name: 'Loading…' }]);
+            getFolderInfo(currentFolderId).then(info => {
+                if (cancelled || !info) return;
+                setPath([ROOT, { id: info.id, name: info.name }]);
+            });
+        }
+
+        listResources(currentFolderId)
+            .then(result => {
                 if (cancelled) return;
                 setConfigured(result.configured);
                 setFiles(result.files);
+                setNextPageToken(result.nextPageToken);
                 setStatus('ok');
-            } catch (err) {
+            })
+            .catch(err => {
                 if (cancelled) return;
                 setError(err.message || 'Unknown error');
                 setStatus('error');
-            }
-        })();
+            });
+
         return () => { cancelled = true; };
-    }, [currentFolder.id]);
+    }, [currentFolderId, location.key]);
 
     const folders = useMemo(() => files.filter(isFolder), [files]);
     const documents = useMemo(() => files.filter(f => !isFolder(f)), [files]);
@@ -53,14 +79,18 @@ export default function Resources() {
         [documents]
     );
     const filterOptions = ['All', ...kindLabels];
-    const visibleDocuments =
-        filter === 'All'
-            ? documents
-            : documents.filter(f => fileKindFromMime(f.mimeType).label === filter);
+
+    const visibleDocuments = useMemo(() => {
+        const q = query.trim().toLowerCase();
+        return documents
+            .filter(f => filter === 'All' || fileKindFromMime(f.mimeType).label === filter)
+            .filter(f => !q || f.name.toLowerCase().includes(q));
+    }, [documents, filter, query]);
 
     const onSelectItem = (item) => {
         if (isFolder(item)) {
-            setPath([...path, { id: item.id, name: item.name }]);
+            const newPath = [...path, { id: item.id, name: item.name }];
+            navigate(`/resources/${item.id}`, { state: { path: newPath } });
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
             setPreviewFile(item);
@@ -68,7 +98,26 @@ export default function Resources() {
     };
 
     const onNavigateToCrumb = (idx) => {
-        setPath(path.slice(0, idx + 1));
+        const newPath = path.slice(0, idx + 1);
+        if (idx === 0) {
+            navigate('/resources', { state: { path: [ROOT] } });
+        } else {
+            navigate(`/resources/${newPath[newPath.length - 1].id}`, { state: { path: newPath } });
+        }
+    };
+
+    const onLoadMore = async () => {
+        if (loadingMore || !nextPageToken) return;
+        setLoadingMore(true);
+        try {
+            const result = await listResources(currentFolderId, nextPageToken);
+            setFiles(prev => [...prev, ...result.files]);
+            setNextPageToken(result.nextPageToken);
+        } catch (err) {
+            console.error('Drive: load more failed', err);
+        } finally {
+            setLoadingMore(false);
+        }
     };
 
     return (
@@ -114,6 +163,20 @@ export default function Resources() {
                                     {folders.length > 0 && (
                                         <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">Files</h2>
                                     )}
+
+                                    {(documents.length > 5 || query) && (
+                                        <div className="relative max-w-md mx-auto mb-6">
+                                            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+                                            <input
+                                                type="search"
+                                                value={query}
+                                                onChange={(e) => setQuery(e.target.value)}
+                                                placeholder="Search files in this folder…"
+                                                className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 bg-white text-base placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                                            />
+                                        </div>
+                                    )}
+
                                     {filterOptions.length > 2 && (
                                         <div className="flex flex-wrap gap-2 justify-center mb-8">
                                             {filterOptions.map(opt => (
@@ -130,8 +193,28 @@ export default function Resources() {
                                             ))}
                                         </div>
                                     )}
-                                    <FileGrid files={visibleDocuments} onSelect={onSelectItem} />
+
+                                    {visibleDocuments.length === 0 ? (
+                                        <p className="text-center text-slate-500 text-sm py-8">
+                                            No files match {query ? `"${query}"` : 'this filter'}.
+                                        </p>
+                                    ) : (
+                                        <FileGrid files={visibleDocuments} onSelect={onSelectItem} />
+                                    )}
                                 </>
+                            )}
+
+                            {nextPageToken && (
+                                <div className="text-center mt-10">
+                                    <button
+                                        onClick={onLoadMore}
+                                        disabled={loadingMore}
+                                        className="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-white font-semibold px-6 py-3 rounded-lg disabled:opacity-60 transition-colors"
+                                    >
+                                        {loadingMore ? 'Loading…' : 'Load more'}
+                                        {!loadingMore && <span className="material-symbols-outlined text-base">expand_more</span>}
+                                    </button>
+                                </div>
                             )}
                         </>
                     )}
