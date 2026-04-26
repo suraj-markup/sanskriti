@@ -8,6 +8,7 @@ const quickLinks = [
     { label: 'Faculty', to: '/faculty' },
     { label: 'Gallery', to: '/gallery' },
     { label: 'Videos', to: '/videos' },
+    { label: 'Resources', to: '/resources' },
     { label: 'Contact', to: '/contact' },
 ];
 

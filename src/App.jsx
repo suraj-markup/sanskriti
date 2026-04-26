@@ -10,6 +10,7 @@ import Results from './pages/Results';
 import Faculty from './pages/Faculty';
 import Gallery from './pages/Gallery';
 import Videos from './pages/Videos';
+import Resources from './pages/Resources';
 import Contact from './pages/Contact';
 
 function ScrollToTop() {
@@ -37,6 +38,7 @@ function AppContent() {
             <Route path="/faculty" element={<Faculty onEnroll={openPopup} />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/videos" element={<Videos />} />
+            <Route path="/resources" element={<Resources />} />
             <Route path="/contact" element={<Contact onEnroll={openPopup} />} />
           </Routes>
         </main>

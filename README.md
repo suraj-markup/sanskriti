@@ -29,7 +29,8 @@ src/
 │   └── YouTubeEmbed.jsx   # Lite thumbnail-first YouTube embed
 ├── data/
 │   ├── galleryImages.js   # Single source of truth for campus photos
-│   └── videos.js          # Manifest of YouTube videos (empty → "Coming Soon")
+│   ├── videos.js          # Manifest of YouTube videos (empty → "Coming Soon")
+│   └── resources.js       # Google Drive API client for /resources page
 ├── pages/
 │   ├── Home.jsx           # Hero, Why-Us, Life-at-Sanskriti carousel, Watch-Us-Teach, Faculty, CTA
 │   ├── About.jsx
@@ -38,6 +39,7 @@ src/
 │   ├── Faculty.jsx
 │   ├── Gallery.jsx        # Carousel + filterable grid + lightbox
 │   ├── Videos.jsx         # Video library — auto coming-soon state when videos.js is empty
+│   ├── Resources.jsx      # Study material listing — pulls live from a Google Drive folder
 │   └── Contact.jsx        # Info + enquiry form + embedded map
 ├── App.jsx                # Router + global EnrollPopup state
 └── main.jsx               # Entry point
@@ -137,11 +139,30 @@ them to web-optimised JPEG/WebP (~200–400 KB each).
 
 ```bash
 npm install
+cp .env.example .env # then fill in the values (only needed for /resources)
 npm run dev          # http://localhost:5173
 npm run build        # dist/
 npm run preview
 npm run lint
 ```
+
+## Environment Variables
+
+The `/resources` page reads files from a public Google Drive folder via the
+Drive API. Two env vars are needed (both prefixed `VITE_` so Vite exposes
+them to the client bundle):
+
+| Variable                      | Purpose                                              |
+|-------------------------------|------------------------------------------------------|
+| `VITE_GOOGLE_DRIVE_API_KEY`   | Drive API key (restricted to your domain + Drive API) |
+| `VITE_GOOGLE_DRIVE_FOLDER_ID` | The Drive folder containing study material           |
+
+If either is missing, `/resources` shows a "Setup needed" placeholder
+locally (`import.meta.env.DEV`) and a friendly "Coming Soon" state in
+production. Folder must be shared as **Anyone with the link can view**.
+
+When deploying to Vercel / Netlify, register these vars in the hosting
+dashboard — never commit `.env` (it's gitignored).
 
 ## Known Cleanups (nice-to-haves)
 

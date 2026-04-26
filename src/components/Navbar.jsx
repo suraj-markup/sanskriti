@@ -8,6 +8,7 @@ const navLinks = [
     { label: 'Faculty', path: '/faculty' },
     { label: 'Gallery', path: '/gallery' },
     { label: 'Videos', path: '/videos' },
+    { label: 'Resources', path: '/resources' },
     { label: 'Contact', path: '/contact' },
 ];
 
